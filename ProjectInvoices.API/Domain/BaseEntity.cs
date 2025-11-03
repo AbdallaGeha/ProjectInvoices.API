@@ -1,4 +1,4 @@
-﻿namespace TaklaNew.API.Domain
+﻿namespace ProjectInvoices.API.Domain
 {
     /// <summary>
     /// Represents a standard entity in our system with unique identifier and auditing info

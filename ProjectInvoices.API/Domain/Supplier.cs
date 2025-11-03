@@ -1,6 +1,6 @@
-﻿using TaklaNew.API.Domain.Enums;
+﻿using ProjectInvoices.API.Domain.Enums;
 
-namespace TaklaNew.API.Domain
+namespace ProjectInvoices.API.Domain
 {
     /// <summary>
     /// Represents a supplier that provides material and services to construction companies

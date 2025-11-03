@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace TaklaNew.API.Utilities
+namespace ProjectInvoices.API.Utilities
 {
     /// <summary>
     /// Provides extension methods on IQueryable

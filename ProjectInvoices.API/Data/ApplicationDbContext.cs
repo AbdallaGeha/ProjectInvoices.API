@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaklaNew.API.Domain;
+using ProjectInvoices.API.Domain;
 
 namespace TakalNew.Data
 {

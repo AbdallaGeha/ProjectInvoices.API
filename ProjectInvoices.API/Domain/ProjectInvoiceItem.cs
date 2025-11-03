@@ -1,4 +1,4 @@
-﻿namespace TaklaNew.API.Domain
+﻿namespace ProjectInvoices.API.Domain
 {
     /// <summary>
     /// Represents a project invoice item

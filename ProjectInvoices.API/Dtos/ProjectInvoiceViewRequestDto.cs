@@ -1,7 +1,7 @@
-﻿using TaklaNew.API.Domain.Enums;
-using TaklaNew.API.Domain;
+﻿using ProjectInvoices.API.Domain.Enums;
+using ProjectInvoices.API.Domain;
 
-namespace TaklaNew.API.Dtos
+namespace ProjectInvoices.API.Dtos
 {
     public class ProjectInvoiceViewRequestDto
     {

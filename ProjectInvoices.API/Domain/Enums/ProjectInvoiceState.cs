@@ -1,4 +1,4 @@
-﻿namespace TaklaNew.API.Domain.Enums
+﻿namespace ProjectInvoices.API.Domain.Enums
 {
     /// <summary>
     /// Represents the current state of a project invoice

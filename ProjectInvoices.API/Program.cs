@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using TakalNew.Data;
-using TaklaNew.API.Data.Repository;
-using TaklaNew.API.Domain.IRepository;
-using TaklaNew.API.Extensions;
-using TaklaNew.API.Middleware;
-using TaklaNew.API.Services;
+using ProjectInvoices.API.Data.Repository;
+using ProjectInvoices.API.Domain.IRepository;
+using ProjectInvoices.API.Extensions;
+using ProjectInvoices.API.Middleware;
+using ProjectInvoices.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

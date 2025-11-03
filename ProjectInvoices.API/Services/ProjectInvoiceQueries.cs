@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TakalNew.Data;
-using TaklaNew.API.Domain.Enums;
-using TaklaNew.API.Dtos;
-using TaklaNew.API.Utilities;
+using ProjectInvoices.API.Domain.Enums;
+using ProjectInvoices.API.Dtos;
+using ProjectInvoices.API.Utilities;
 
-namespace TaklaNew.API.Services
+namespace ProjectInvoices.API.Services
 {
     /// <summary>
     /// Concrete implementation of IProjectInvoiceQueries

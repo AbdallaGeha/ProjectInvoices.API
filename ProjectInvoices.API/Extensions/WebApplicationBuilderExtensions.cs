@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace TaklaNew.API.Extensions
+namespace ProjectInvoices.API.Extensions
 {
     /// <summary>
     /// Add extension methods on WebApplicationBuilder

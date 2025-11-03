@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TaklaNew.API.Domain;
-using TaklaNew.API.Domain.IRepository;
-using TaklaNew.API.Dtos;
+using ProjectInvoices.API.Domain;
+using ProjectInvoices.API.Domain.IRepository;
+using ProjectInvoices.API.Dtos;
 
-namespace TaklaNew.API.Controllers
+namespace ProjectInvoices.API.Controllers
 {
     /// <summary>
     /// Handles operations related to projects

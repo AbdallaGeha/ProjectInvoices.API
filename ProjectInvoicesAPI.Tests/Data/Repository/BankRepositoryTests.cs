@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TakalNew.Data;
-using TaklaNew.API.Data.Repository;
-using TaklaNew.API.Domain;
+using ProjectInvoices.API.Data.Repository;
+using ProjectInvoices.API.Domain;
 
-namespace TaklaNewAPI.Tests.Data.Repository
+namespace ProjectInvoicesAPI.Tests.Data.Repository
 {
     /// <summary>
     /// Unit tests for BankRepository

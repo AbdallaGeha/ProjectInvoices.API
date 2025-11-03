@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaklaNew.API.Dtos
+namespace ProjectInvoices.API.Dtos
 {
     public class BankUpdateDto
     {

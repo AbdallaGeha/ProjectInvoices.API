@@ -6,14 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaklaNew.API.Controllers;
-using TaklaNew.API.Domain;
-using TaklaNew.API.Domain.IRepository;
-using TaklaNew.API.Dtos;
-using TaklaNew.API.Mapping;
-using TaklaNewAPI.Tests.Helpers;
+using ProjectInvoices.API.Controllers;
+using ProjectInvoices.API.Domain;
+using ProjectInvoices.API.Domain.IRepository;
+using ProjectInvoices.API.Dtos;
+using ProjectInvoices.API.Mapping;
+using ProjectInvoicesAPI.Tests.Helpers;
 
-namespace TaklaNewAPI.Tests.Controllers
+namespace ProjectInvoicesAPI.Tests.Controllers
 {
     /// <summary>
     /// Unit tests for BankController

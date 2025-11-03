@@ -1,4 +1,4 @@
-﻿namespace TaklaNew.API.Dtos
+﻿namespace ProjectInvoices.API.Dtos
 {
     public class BanksPaginateDto
     {

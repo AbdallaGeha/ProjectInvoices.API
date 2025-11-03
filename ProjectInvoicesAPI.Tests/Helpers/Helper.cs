@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaklaNewAPI.Tests.Helpers
+namespace ProjectInvoicesAPI.Tests.Helpers
 {
     /// <summary>
     /// This class provides helper methods for unit tests

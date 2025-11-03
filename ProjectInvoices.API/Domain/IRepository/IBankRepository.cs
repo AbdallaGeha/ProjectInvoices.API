@@ -1,4 +1,4 @@
-﻿namespace TaklaNew.API.Domain.IRepository
+﻿namespace ProjectInvoices.API.Domain.IRepository
 {
     /// <summary>
     /// Defines data access operations for banks

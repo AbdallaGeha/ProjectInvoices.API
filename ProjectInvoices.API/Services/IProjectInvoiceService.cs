@@ -1,7 +1,7 @@
-﻿using TaklaNew.API.Domain;
-using TaklaNew.API.Dtos;
+﻿using ProjectInvoices.API.Domain;
+using ProjectInvoices.API.Dtos;
 
-namespace TaklaNew.API.Services
+namespace ProjectInvoices.API.Services
 {
     /// <summary>
     /// Provides operations for managing project invoices

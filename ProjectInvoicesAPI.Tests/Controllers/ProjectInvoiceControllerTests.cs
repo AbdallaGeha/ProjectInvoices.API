@@ -6,16 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaklaNew.API.Controllers;
-using TaklaNew.API.Data.Repository;
-using TaklaNew.API.Domain;
-using TaklaNew.API.Domain.IRepository;
-using TaklaNew.API.Dtos;
-using TaklaNew.API.Mapping;
-using TaklaNew.API.Services;
-using TaklaNewAPI.Tests.Helpers;
+using ProjectInvoices.API.Controllers;
+using ProjectInvoices.API.Data.Repository;
+using ProjectInvoices.API.Domain;
+using ProjectInvoices.API.Domain.IRepository;
+using ProjectInvoices.API.Dtos;
+using ProjectInvoices.API.Mapping;
+using ProjectInvoices.API.Services;
+using ProjectInvoicesAPI.Tests.Helpers;
 
-namespace TaklaNewAPI.Tests.Controllers
+namespace ProjectInvoicesAPI.Tests.Controllers
 {
     public class ProjectInvoiceControllerTests
     {
@@ -109,7 +109,7 @@ namespace TaklaNewAPI.Tests.Controllers
                 ProjectId = 1,
                 SupplierId = 1,
                 Date = DateTime.Now,
-                State = TaklaNew.API.Domain.Enums.ProjectInvoiceState.Created,
+                State = ProjectInvoices.API.Domain.Enums.ProjectInvoiceState.Created,
                 Items = new List<ProjectInvoiceItem>()
                 {
                     new ProjectInvoiceItem { Id = 1, ItemId = 1, Unit = "Unit1", Quantity = 1, Price = 1},
@@ -151,7 +151,7 @@ namespace TaklaNewAPI.Tests.Controllers
                 ProjectId = 1,
                 SupplierId = 1,
                 Date = DateTime.Now,
-                State = TaklaNew.API.Domain.Enums.ProjectInvoiceState.Created,
+                State = ProjectInvoices.API.Domain.Enums.ProjectInvoiceState.Created,
                 Items = new List<ProjectInvoiceItem>()
                 {
                     new ProjectInvoiceItem { Id = 1, ItemId = 1, Unit = "Unit1", Quantity = 1, Price = 1},
@@ -166,7 +166,7 @@ namespace TaklaNewAPI.Tests.Controllers
                 ProjectId = 1,
                 SupplierId = 1,
                 Date = DateTime.Now,
-                State = (short)TaklaNew.API.Domain.Enums.ProjectInvoiceState.Created,
+                State = (short)ProjectInvoices.API.Domain.Enums.ProjectInvoiceState.Created,
                 Items = new List<ProjectInvoiceItemUpdateDto>()
                 {
                     new ProjectInvoiceItemUpdateDto { Id = 1, ItemId = 1, Unit = "Unit1", Quantity = 10, Price = 1},
@@ -193,7 +193,7 @@ namespace TaklaNewAPI.Tests.Controllers
                 ProjectId = 1,
                 SupplierId = 1,
                 Date = DateTime.Now,
-                State = TaklaNew.API.Domain.Enums.ProjectInvoiceState.Created,
+                State = ProjectInvoices.API.Domain.Enums.ProjectInvoiceState.Created,
                 Items = new List<ProjectInvoiceItem>()
                 {
                     new ProjectInvoiceItem { Id = 1, ItemId = 1, Unit = "Unit1", Quantity = 1, Price = 1},
@@ -208,7 +208,7 @@ namespace TaklaNewAPI.Tests.Controllers
                 ProjectId = 1,
                 SupplierId = 1,
                 Date = DateTime.Now,
-                State = (short)TaklaNew.API.Domain.Enums.ProjectInvoiceState.Created,
+                State = (short)ProjectInvoices.API.Domain.Enums.ProjectInvoiceState.Created,
                 Items = new List<ProjectInvoiceItemUpdateDto>()
                 {
                     new ProjectInvoiceItemUpdateDto { Id = 1, ItemId = 1, Unit = "Unit1", Quantity = 10, Price = 1},
@@ -249,7 +249,7 @@ namespace TaklaNewAPI.Tests.Controllers
                 ProjectId = 1,
                 SupplierId = 1,
                 Date = DateTime.Now,
-                State = TaklaNew.API.Domain.Enums.ProjectInvoiceState.Created,
+                State = ProjectInvoices.API.Domain.Enums.ProjectInvoiceState.Created,
                 Items = new List<ProjectInvoiceItem>()
                 {
                     new ProjectInvoiceItem { Id = 1, ItemId = 1, Unit = "Unit1", Quantity = 1, Price = 1},

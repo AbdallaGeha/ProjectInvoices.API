@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TaklaNew.API.Migrations
+namespace ProjectInvoices.API.Migrations
 {
     /// <inheritdoc />
     public partial class DbTables : Migration

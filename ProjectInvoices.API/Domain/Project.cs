@@ -1,6 +1,6 @@
-﻿using TaklaNew.API.Domain.Enums;
+﻿using ProjectInvoices.API.Domain.Enums;
 
-namespace TaklaNew.API.Domain
+namespace ProjectInvoices.API.Domain
 {
     /// <summary>
     /// Represents a construction project

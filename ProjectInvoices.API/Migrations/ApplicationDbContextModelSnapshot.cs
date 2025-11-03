@@ -8,7 +8,7 @@ using TakalNew.Data;
 
 #nullable disable
 
-namespace TaklaNew.API.Migrations
+namespace ProjectInvoices.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace TaklaNew.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TaklaNew.API.Domain.Bank", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.Bank", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("Banks");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.BankAccount", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.BankAccount", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,7 +89,7 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("BankAccounts");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.CashOutMovement", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.CashOutMovement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -125,7 +125,7 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("CashOutMovements");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.CheckOutMovement", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.CheckOutMovement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -171,7 +171,7 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("CheckOutMovements");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.Contractor", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.Contractor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -210,7 +210,7 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("Contractors");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.Item", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.Item", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -245,7 +245,7 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.Project", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -275,7 +275,7 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.ProjectInvoice", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -318,7 +318,7 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("ProjectInvoices");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.ProjectInvoiceItem", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoiceItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -358,7 +358,7 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("ProjectInvoiceItems");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.ProjectInvoicePayment", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoicePayment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -403,7 +403,7 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("ProjectInvoicePayments");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.ProjectInvoicePaymentGroup", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoicePaymentGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -425,7 +425,7 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("ProjectInvoicePaymentGroups");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.Supplier", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.Supplier", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -464,9 +464,9 @@ namespace TaklaNew.API.Migrations
                     b.ToTable("Suppliers");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.BankAccount", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.BankAccount", b =>
                 {
-                    b.HasOne("TaklaNew.API.Domain.Bank", "Bank")
+                    b.HasOne("ProjectInvoices.API.Domain.Bank", "Bank")
                         .WithMany()
                         .HasForeignKey("BankId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -475,24 +475,24 @@ namespace TaklaNew.API.Migrations
                     b.Navigation("Bank");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.CheckOutMovement", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.CheckOutMovement", b =>
                 {
-                    b.HasOne("TaklaNew.API.Domain.BankAccount", null)
+                    b.HasOne("ProjectInvoices.API.Domain.BankAccount", null)
                         .WithMany()
                         .HasForeignKey("BankAcountId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.ProjectInvoice", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoice", b =>
                 {
-                    b.HasOne("TaklaNew.API.Domain.Project", "Project")
+                    b.HasOne("ProjectInvoices.API.Domain.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaklaNew.API.Domain.Supplier", "Supplier")
+                    b.HasOne("ProjectInvoices.API.Domain.Supplier", "Supplier")
                         .WithMany()
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -503,15 +503,15 @@ namespace TaklaNew.API.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.ProjectInvoiceItem", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoiceItem", b =>
                 {
-                    b.HasOne("TaklaNew.API.Domain.Item", "Item")
+                    b.HasOne("ProjectInvoices.API.Domain.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaklaNew.API.Domain.ProjectInvoice", null)
+                    b.HasOne("ProjectInvoices.API.Domain.ProjectInvoice", null)
                         .WithMany("Items")
                         .HasForeignKey("ProjectInvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -520,21 +520,21 @@ namespace TaklaNew.API.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.ProjectInvoicePayment", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoicePayment", b =>
                 {
-                    b.HasOne("TaklaNew.API.Domain.ProjectInvoicePaymentGroup", null)
+                    b.HasOne("ProjectInvoices.API.Domain.ProjectInvoicePaymentGroup", null)
                         .WithMany()
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("TaklaNew.API.Domain.ProjectInvoice", null)
+                    b.HasOne("ProjectInvoices.API.Domain.ProjectInvoice", null)
                         .WithMany()
                         .HasForeignKey("ProjectInvoiceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TaklaNew.API.Domain.ProjectInvoice", b =>
+            modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoice", b =>
                 {
                     b.Navigation("Items");
                 });

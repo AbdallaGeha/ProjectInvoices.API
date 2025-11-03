@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using TakalNew.Data;
-using TaklaNew.API.Domain;
-using TaklaNew.API.Domain.IRepository;
+using ProjectInvoices.API.Domain;
+using ProjectInvoices.API.Domain.IRepository;
 
-namespace TaklaNew.API.Data.Repository
+namespace ProjectInvoices.API.Data.Repository
 {
     /// <summary>
     /// Concrete implementation of IProjectInvoiceRepository

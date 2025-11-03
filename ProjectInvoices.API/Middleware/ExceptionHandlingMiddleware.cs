@@ -1,4 +1,4 @@
-﻿namespace TaklaNew.API.Middleware
+﻿namespace ProjectInvoices.API.Middleware
 {
     /// <summary>
     /// Exception Handling Middleware class, When we encounter an unhandled exception

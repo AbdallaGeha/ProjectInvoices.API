@@ -1,9 +1,9 @@
-﻿using TaklaNew.API.Domain;
-using TaklaNew.API.Domain.Enums;
-using TaklaNew.API.Domain.IRepository;
-using TaklaNew.API.Dtos;
+﻿using ProjectInvoices.API.Domain;
+using ProjectInvoices.API.Domain.Enums;
+using ProjectInvoices.API.Domain.IRepository;
+using ProjectInvoices.API.Dtos;
 
-namespace TaklaNew.API.Services
+namespace ProjectInvoices.API.Services
 {
     /// <summary>
     /// Concrete implementation of IProjectInvoiceService

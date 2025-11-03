@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaklaNew.API.Domain;
-using TaklaNew.API.Domain.Enums;
-using TaklaNew.API.Domain.IRepository;
-using TaklaNew.API.Dtos;
-using TaklaNew.API.Services;
+using ProjectInvoices.API.Domain;
+using ProjectInvoices.API.Domain.Enums;
+using ProjectInvoices.API.Domain.IRepository;
+using ProjectInvoices.API.Dtos;
+using ProjectInvoices.API.Services;
 
-namespace TaklaNewAPI.Tests.Services
+namespace ProjectInvoicesAPI.Tests.Services
 {
     /// <summary>
     /// Unit tests for ProjectInvoiceService

@@ -1,6 +1,6 @@
-﻿using TaklaNew.API.Domain;
+﻿using ProjectInvoices.API.Domain;
 
-namespace TaklaNew.API.Domain.IRepository
+namespace ProjectInvoices.API.Domain.IRepository
 {
     /// <summary>
     /// Defines data access operations for items

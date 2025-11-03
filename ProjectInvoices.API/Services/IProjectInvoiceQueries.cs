@@ -1,7 +1,7 @@
-﻿using TaklaNew.API.Domain.Enums;
-using TaklaNew.API.Dtos;
+﻿using ProjectInvoices.API.Domain.Enums;
+using ProjectInvoices.API.Dtos;
 
-namespace TaklaNew.API.Services
+namespace ProjectInvoices.API.Services
 {
     /// <summary>
     /// Provides query operations for project invoices

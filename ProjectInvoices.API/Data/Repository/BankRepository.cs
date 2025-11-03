@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TakalNew.Data;
-using TaklaNew.API.Domain;
-using TaklaNew.API.Domain.IRepository;
-using TaklaNew.API.Utilities;
+using ProjectInvoices.API.Domain;
+using ProjectInvoices.API.Domain.IRepository;
+using ProjectInvoices.API.Utilities;
 
-namespace TaklaNew.API.Data.Repository
+namespace ProjectInvoices.API.Data.Repository
 {
     /// <summary>
     /// Concrete implementation of IBankRepository

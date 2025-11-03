@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using TaklaNew.API.Domain;
-using TaklaNew.API.Domain.Enums;
-using TaklaNew.API.Dtos;
+using ProjectInvoices.API.Domain;
+using ProjectInvoices.API.Domain.Enums;
+using ProjectInvoices.API.Dtos;
 
-namespace TaklaNew.API.Mapping
+namespace ProjectInvoices.API.Mapping
 {
     /// <summary>
     /// Provides a profile used by AutoMapper to map objects
