@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using TakalNew.Data;
+using ProjectInvoices.API.Data;
 using ProjectInvoices.API.Domain;
 using ProjectInvoices.API.Domain.IRepository;
 

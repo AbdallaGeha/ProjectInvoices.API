@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using TakalNew.Data;
+using ProjectInvoices.API.Data;
 using ProjectInvoices.API.Data.Repository;
 using ProjectInvoices.API.Domain.IRepository;
 using ProjectInvoices.API.Extensions;

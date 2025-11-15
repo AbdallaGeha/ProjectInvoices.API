@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectInvoices.API.Domain;
 
-namespace TakalNew.Data
+namespace ProjectInvoices.API.Data
 {
     /// <summary>
     /// Represents the application database context for managing project invoices 

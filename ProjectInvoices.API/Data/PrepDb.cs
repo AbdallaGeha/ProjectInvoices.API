@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using TakalNew.Data;
+using ProjectInvoices.API.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TakalNew.Data
+namespace ProjectInvoices.API.Data
 {
     /// <summary>
     /// This class is used to run pending migrations and initialize DB with initial data if needed
