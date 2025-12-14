@@ -2,7 +2,7 @@
 
 A  **.NET 8 Web API** for managing construction project invoices — from project and supplier and items setup, to invoice creation and approvals, and transactional payment handling.
 
-This personal project showcases my skills in **modern architecture**, **Entity Framework Core**, **transaction management**, and **secure role-based authorization**, designed to reflect real-world enterprise backend systems.
+This personal project showcases my skills in **modern architecture**, **Entity Framework Core**, **transaction management**, and **secure role-based authorization**, designed to reflect practical real-world backend systems ideal for small and medium-sized projects
 
 It is used alongside: 
 - [Login Management API](https://github.com/AbdallaGeha)
