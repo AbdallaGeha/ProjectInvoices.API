@@ -1,4 +1,6 @@
-﻿namespace ProjectInvoices.API.Domain
+﻿using ProjectInvoices.API.Domain.Base;
+
+namespace ProjectInvoices.API.Domain
 {
     /// <summary>
     /// Represents a project invoice item

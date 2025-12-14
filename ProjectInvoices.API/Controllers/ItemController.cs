@@ -1,196 +1,102 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ProjectInvoices.API.Domain;
-using ProjectInvoices.API.Domain.IRepository;
 using ProjectInvoices.API.Dtos;
+using ProjectInvoices.API.Services.Interfaces;
 
 namespace ProjectInvoices.API.Controllers
 {
     /// <summary>
-    /// Handles operations related to items
+    /// Handles operations related to Items
     /// </summary>
     [Route("api/item")]
     [ApiController]
     [Authorize(Roles = "admin,setup entry")]
-    public class itemController : ControllerBase
+    public class ItemController : ControllerBase
     {
-        private readonly IItemRepository _repository;
-        private readonly IMapper _mapper;
-
-        public itemController(IItemRepository repository, IMapper mapper)
+        private readonly IItemService _service;
+        public ItemController(IItemService service, ILookupService lookupService)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _service = service;
         }
 
         /// <summary>
-        /// Retrieves all items
+        /// Retrieves a paginated list of Items based on the specified page number, page size,
+        /// and optional search term.
         /// </summary>
-        /// <returns>List of item dto objects</returns>
-        /// <response code="200">Returns the List of item dto objects</response>
-        ///
-        [HttpGet("all")]
-        public async Task<ActionResult<List<ItemDto>>> GetAll()
-        {
-            //Get all items from DB
-            var items = await _repository.GetAllItemsAsync();
-            var itemsDto = _mapper.Map<IEnumerable<ItemDto>>(items);
-
-            return Ok(itemsDto);
-        }
-
-        /// <summary>
-        /// Retrieves items after pagination and searching
-        /// </summary>
-        /// <param name="pageNumber">page number</param>
-        /// <param name="pageSize">page size</param>
-        /// <param name="search">search keyword</param>
-        /// <returns>A dto object contains list of items and total number of items
-        /// to be used for pagination
-        /// </returns>
-        /// <response code="200">Returns a dto object contains list of items and total number of items</response>
-        /// 
+        /// <response code="200">Returns the paginated list of Items.</response>
+        /// <response code="400">Returned when the request parameters are invalid.</response>
         [HttpGet("search")]
+        [ProducesResponseType(typeof(ItemsPaginateDto), 200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<ItemsPaginateDto>> Get([FromQuery] int pageNumber, int pageSize, string? search = null)
         {
-            //Get total number of items in DB (for pagination)
-            var totalRecords = await _repository.GetTotalRecords(search);
-
-            //Get items by page and search keyword
-            var items = await _repository.GetItemsAsync(pageNumber, pageSize, search);
-
-            var itemsDto = _mapper.Map<IEnumerable<ItemDto>>(items);
-            var itemsPaginateDto = new ItemsPaginateDto { Items = itemsDto, TotalRecords = totalRecords };
-
-            return Ok(itemsPaginateDto);
+            var ItemsPaginateDto = await _service.GetItemsAsync(pageNumber, pageSize, search);
+            return Ok(ItemsPaginateDto);
         }
 
+
         /// <summary>
-        /// Retrieves a item by its id
+        /// Gets a Item by ID.
         /// </summary>
-        /// <param name="id">item id</param>
-        /// <returns>the matching item dto object</returns>
-        /// <response code="404">item not found</response>
-        /// <response code="200">returns the matching item dto object</response>
-        /// 
+        /// <response code="200">Returns the Item data.</response>
+        /// <response code="404">Item not found.</response>
+        /// <response code="400">Invalid Id supplied.</response>
+        [ProducesResponseType(typeof(ItemUpdateGetDto), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ItemUpdateGetDto>> Get(int id)
         {
-            //Get item from DB by its id
-            var item = await _repository.GetItemByIdAsync(id);
-
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            var itemUpdateGetDto = _mapper.Map<ItemUpdateGetDto>(item);
-            return Ok(itemUpdateGetDto);
+            var ItemUpdateGetDto = await _service.GetItemByIdAsync(id);
+            return Ok(ItemUpdateGetDto);
         }
 
         /// <summary>
-        /// Create a new item
+        /// Creates a new Item using the provided data.
         /// </summary>
-        /// <param name="itemDto">item info</param>
-        /// <returns>no content if item created successfully</returns>
-        /// <response code="400">item info are not valid or item name already exists</response>
-        /// <response code="204">item created successfully</response>
-        ///
+        /// <response code="204">The Item was successfully created.</response>
+        /// <response code="400">The request data is invalid.</response>
+        /// <response code="409">A Item with the same name already exists.</response>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ItemCreationDto itemDto)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(409)]
+        public async Task<IActionResult> Post([FromBody] ItemCreationDto ItemDto)
         {
-            //Check if new item name exists in DB
-            var isExistingitem = await _repository.IsExistingItemAsync(itemDto.Name);
-            if (isExistingitem)
-            {
-                return BadRequest("Item name is already in use");
-            }
-
-            var item = _mapper.Map<Item>(itemDto);
-
-            //Add new item to DB
-            await _repository.AddItemAsync(item);
-            
+            await _service.AddItemAsync(ItemDto);
             return NoContent();
         }
 
         /// <summary>
-        /// Update a item
+        /// Updates an existing Item with the specified identifier.
         /// </summary>
-        /// <param name="id">item id</param>
-        /// <param name="itemDto">item info</param>
-        /// <returns>no content if item updated successfully</returns>
-        /// <response code="404">item not found</response>
-        /// <response code="400">item info are not valid or item name already in use</response>
-        /// <response code="204">item updated successfully</response>
-        ///
+        /// <response code="204">The Item was successfully updated.</response>
+        /// <response code="400">The request data is invalid.</response>
+        /// <response code="404">The Item with the given ID was not found.</response>
+        /// <response code="409">Item name already exists.</response>
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ItemUpdateDto itemDto)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
+        public async Task<IActionResult> Put(int id, [FromBody] ItemUpdateDto ItemDto)
         {
-            //Get item from DB by its id
-            var item = await _repository.GetItemByIdAsync(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            if (!itemDto.Name.Equals(item.Name))
-            {
-                //Check if the item to update new name exists in DB
-                var isExistingitem = await _repository.IsExistingItemAsync(itemDto.Name);
-                if (isExistingitem)
-                {
-                    return BadRequest("Item name is already in use");
-                }
-            }
-
-            _mapper.Map(itemDto, item);
-
-            //Update item in DB
-            await _repository.UpdateItemAsync();
+            await _service.UpdateItemAsync(id, ItemDto);
             return NoContent();
         }
 
         /// <summary>
-        /// Delete a item
+        /// Deletes a Item by its identifier.
         /// </summary>
-        /// <param name="id">item id</param>
-        /// <returns>no content if item deleted successfully</returns>
-        /// <response code="404">item not found</response>
-        /// <response code="204">item deleted successfully</response>
-        ///
+        /// <response code="204">The Item was successfully deleted.</response>
+        /// <response code="404">The Item with the specified ID was not found.</response>
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(int id)
         {
-            //Get item from DB by its id
-            var item = await _repository.GetItemByIdAsync(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            //Delete item from DB
-            await _repository.DeleteItemAsync(item);
-            
+            await _service.DeleteItemAsync(id);
             return NoContent();
-        }
-
-        /// <summary>
-        /// Retrieves a list of items as a list of keyvalue pairs
-        /// </summary>
-        /// <returns>a list of items as a list of keyvalue pairs</returns>
-        /// <response code="200">a list of items as a list of keyvalue pairs</response>
-        ///
-        [HttpGet("itemskeyvalue")]
-        public async Task<ActionResult<List<KeyValueDto>>> GetitemsKeyValue()
-        {
-            //Get all items from DB
-            var items = await _repository.GetAllItemsAsync();
-            var result = items.Select(x => new KeyValueDto { Key = x.Id.ToString(), Value = x.Name.ToString() });
-            return Ok(result);
         }
     }
 }

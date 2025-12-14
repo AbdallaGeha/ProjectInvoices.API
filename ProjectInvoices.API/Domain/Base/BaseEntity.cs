@@ -1,9 +1,9 @@
-﻿namespace ProjectInvoices.API.Domain
+﻿namespace ProjectInvoices.API.Domain.Base
 {
     /// <summary>
     /// Represents a standard entity in our system with unique identifier and auditing info
     /// </summary>
-    public class BaseEntity
+    public abstract class BaseEntity
     {
         /// <summary>
         /// Entity unique id

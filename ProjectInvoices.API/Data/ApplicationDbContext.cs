@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectInvoices.API.Domain;
+using ProjectInvoices.API.Domain.Base;
 
 namespace ProjectInvoices.API.Data
 {

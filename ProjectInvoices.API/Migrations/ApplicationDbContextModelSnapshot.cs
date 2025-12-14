@@ -46,7 +46,7 @@ namespace ProjectInvoices.API.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Banks");
+                    b.ToTable("Banks", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.BankAccount", b =>
@@ -86,7 +86,7 @@ namespace ProjectInvoices.API.Migrations
 
                     b.HasIndex("BankId");
 
-                    b.ToTable("BankAccounts");
+                    b.ToTable("BankAccounts", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.CashOutMovement", b =>
@@ -122,7 +122,7 @@ namespace ProjectInvoices.API.Migrations
 
                     b.HasIndex("PaymentId");
 
-                    b.ToTable("CashOutMovements");
+                    b.ToTable("CashOutMovements", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.CheckOutMovement", b =>
@@ -168,7 +168,7 @@ namespace ProjectInvoices.API.Migrations
 
                     b.HasIndex("PaymentId");
 
-                    b.ToTable("CheckOutMovements");
+                    b.ToTable("CheckOutMovements", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.Contractor", b =>
@@ -207,7 +207,7 @@ namespace ProjectInvoices.API.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Contractors");
+                    b.ToTable("Contractors", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.Item", b =>
@@ -242,7 +242,7 @@ namespace ProjectInvoices.API.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.Project", b =>
@@ -272,7 +272,7 @@ namespace ProjectInvoices.API.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoice", b =>
@@ -315,7 +315,7 @@ namespace ProjectInvoices.API.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("ProjectInvoices");
+                    b.ToTable("ProjectInvoices", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoiceItem", b =>
@@ -355,7 +355,7 @@ namespace ProjectInvoices.API.Migrations
 
                     b.HasIndex("ProjectInvoiceId");
 
-                    b.ToTable("ProjectInvoiceItems");
+                    b.ToTable("ProjectInvoiceItems", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoicePayment", b =>
@@ -400,7 +400,7 @@ namespace ProjectInvoices.API.Migrations
 
                     b.HasIndex("ProjectInvoiceId");
 
-                    b.ToTable("ProjectInvoicePayments");
+                    b.ToTable("ProjectInvoicePayments", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.ProjectInvoicePaymentGroup", b =>
@@ -422,7 +422,7 @@ namespace ProjectInvoices.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProjectInvoicePaymentGroups");
+                    b.ToTable("ProjectInvoicePaymentGroups", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.Supplier", b =>
@@ -461,7 +461,7 @@ namespace ProjectInvoices.API.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Suppliers");
+                    b.ToTable("Suppliers", (string)null);
                 });
 
             modelBuilder.Entity("ProjectInvoices.API.Domain.BankAccount", b =>

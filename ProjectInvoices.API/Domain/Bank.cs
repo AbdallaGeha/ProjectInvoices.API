@@ -1,15 +1,12 @@
-﻿using ProjectInvoices.API.Domain.Enums;
+﻿using ProjectInvoices.API.Domain.Base;
+using ProjectInvoices.API.Domain.Enums;
 
 namespace ProjectInvoices.API.Domain
 {
     /// <summary>
     /// Represents a bank 
     /// </summary>
-    public class Bank : BaseEntity
+    public class Bank : NamedEntity
     {
-        /// <summary>
-        /// Gets or sets bank name
-        /// </summary>
-        public string Name { get; set; }
     }
 }

@@ -1,192 +1,102 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ProjectInvoices.API.Domain;
-using ProjectInvoices.API.Domain.IRepository;
 using ProjectInvoices.API.Dtos;
+using ProjectInvoices.API.Services.Interfaces;
 
 namespace ProjectInvoices.API.Controllers
 {
     /// <summary>
-    /// Handles operations related to bank accounts
+    /// Handles operations related to BankAccounts
     /// </summary>
     [Route("api/bankaccount")]
     [ApiController]
     [Authorize(Roles = "admin,setup entry")]
     public class BankAccountController : ControllerBase
     {
-        private readonly IBankAccountRepository _repository;
-        private readonly IMapper _mapper;
-        public BankAccountController(IBankAccountRepository repository, IMapper mapper)
+        private readonly IBankAccountService _service;
+
+        public BankAccountController(IBankAccountService service, ILookupService lookupService)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _service = service;
         }
 
         /// <summary>
-        /// Retrieves all bank accounts
+        /// Retrieves a paginated list of BankAccounts based on the specified page number, page size,
+        /// and optional search term.
         /// </summary>
-        /// <returns>List of bank account dto objects</returns>
-        /// <response code="200">Returns the List of bank account dto objects</response>
-        ///
-        [HttpGet("all")]
-        public async Task<ActionResult<List<BankAccountDto>>> GetAll()
-        {
-            //Get all bank accounts from DB
-            var bankAccounts = await _repository.GetAllBankAccountsAsync();
-            var bankAccountsDto = _mapper.Map<IEnumerable<BankAccountDto>>(bankAccounts);
-
-            return Ok(bankAccountsDto);
-        }
-
-        /// <summary>
-        /// Retrieves bank accounts after pagination and searching
-        /// </summary>
-        /// <param name="pageNumber">page number</param>
-        /// <param name="pageSize">page size</param>
-        /// <param name="search">search keyword</param>
-        /// <returns>A dto object contains list of bank accounts and total number of bank accounts
-        /// to be used for pagination
-        /// </returns>
-        /// <response code="200">Returns a dto object contains list of bank accounts and total number of bank accounts</response>
-        ///
+        /// <response code="200">Returns the paginated list of BankAccounts.</response>
+        /// <response code="400">Returned when the request parameters are invalid.</response>
         [HttpGet("search")]
+        [ProducesResponseType(typeof(BankAccountsPaginateDto), 200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<BankAccountsPaginateDto>> Get([FromQuery] int pageNumber, int pageSize, string? search = null)
         {
-            //Get total number of bank accounts in DB (for pagination)
-            var totalRecords = await _repository.GetTotalRecords(search);
-
-            //Get bank accounts by page and search keyword
-            var bankAccounts = await _repository.GetBankAccountsAsync(pageNumber, pageSize, search);
-
-            var bankAccountsDto = _mapper.Map<IEnumerable<BankAccountDto>>(bankAccounts);
-            var bankAccountsPaginateDto = new BankAccountsPaginateDto { BankAccounts = bankAccountsDto, TotalRecords = totalRecords };
-
-            return Ok(bankAccountsPaginateDto);
+            var BankAccountsPaginateDto = await _service.GetBankAccountsAsync(pageNumber, pageSize, search);
+            return Ok(BankAccountsPaginateDto);
         }
 
+
         /// <summary>
-        /// Retrieves a bank account by its id
+        /// Gets a BankAccount by ID.
         /// </summary>
-        /// <param name="id">bank account id</param>
-        /// <returns>the matching bank account dto object</returns>
-        /// <response code="404">bank account not found</response>
-        /// <response code="200">returns the matching bank account dto object</response>
-        ///
+        /// <response code="200">Returns the BankAccount data.</response>
+        /// <response code="404">BankAccount not found.</response>
+        /// <response code="400">Invalid Id supplied.</response>
+        [ProducesResponseType(typeof(BankAccountUpdateGetDto), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<BankAccountUpdateGetDto>> Get(int id)
         {
-            //Get bank account from DB by its id
-            var bankAccount = await _repository.GetBankAccountByIdAsync(id);
-
-            if (bankAccount == null)
-            {
-                return NotFound();
-            }
-
-            var bankAccountUpdateGetDto = _mapper.Map<BankAccountUpdateGetDto>(bankAccount);
-            return Ok(bankAccountUpdateGetDto);
+            var BankAccountUpdateGetDto = await _service.GetBankAccountByIdAsync(id);
+            return Ok(BankAccountUpdateGetDto);
         }
 
         /// <summary>
-        /// Create a new bank account
+        /// Creates a new BankAccount using the provided data.
         /// </summary>
-        /// <param name="bank accountDto">bank account info</param>
-        /// <returns>no content if bank account created successfully</returns>
-        /// <response code="400">bank account info are not valid or bank account name already exists</response>
-        /// <response code="204">bank account created successfully</response>
-        ///
+        /// <response code="204">The BankAccount was successfully created.</response>
+        /// <response code="400">The request data is invalid.</response>
+        /// <response code="409">A BankAccount with the same name already exists.</response>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] BankAccountCreationDto bankAccountDto)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(409)]
+        public async Task<IActionResult> Post([FromBody] BankAccountCreationDto BankAccountDto)
         {
-            //Check if new bank account name exists in DB
-            var isExistingAccountName = await _repository.IsExistingAccountNameAsync(bankAccountDto.AccountName);
-            if (isExistingAccountName)
-            {
-                return BadRequest("Account name is already in use");
-            }
-
-            var isExistingAccountNumber = await _repository.IsExistingAccountNumberAsync(bankAccountDto.AccountNumber);
-            if (isExistingAccountNumber)
-            {
-                return BadRequest("Account number is already in use");
-            }
-
-            var bankAccount = _mapper.Map<BankAccount>(bankAccountDto);
-
-            //Add new bank account to DB
-            await _repository.AddBankAccountAsync(bankAccount);
-            
+            await _service.AddBankAccountAsync(BankAccountDto);
             return NoContent();
         }
 
         /// <summary>
-        /// Update a bank account
+        /// Updates an existing BankAccount with the specified identifier.
         /// </summary>
-        /// <param name="id">bank account id</param>
-        /// <param name="bank accountDto">bank account info</param>
-        /// <returns>no content if bank account updated successfully</returns>
-        /// <response code="404">bank account not found</response>
-        /// <response code="400">bank account info are not valid or bank account name already in use</response>
-        /// <response code="204">bank account updated successfully</response>
-        ///
+        /// <response code="204">The BankAccount was successfully updated.</response>
+        /// <response code="400">The request data is invalid.</response>
+        /// <response code="404">The BankAccount with the given ID was not found.</response>
+        /// <response code="409">BankAccount name already exists.</response>
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Put(int id, [FromBody] BankAccountUpdateDto bankAccountDto)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
+        public async Task<IActionResult> Put(int id, [FromBody] BankAccountUpdateDto BankAccountDto)
         {
-            //Get bank account from DB by its id
-            var bankAccount = await _repository.GetBankAccountByIdAsync(id);
-            if (bankAccount == null)
-            {
-                return NotFound();
-            }
-
-            if (!bankAccountDto.AccountName.Equals(bankAccount.AccountName))
-            {
-                //Check if the bank account to update new name exists in DB
-                var isExistingAccountName = await _repository.IsExistingAccountNameAsync(bankAccountDto.AccountName);
-                if (isExistingAccountName)
-                {
-                    return BadRequest("Account name is already in use");
-                }
-            }
-
-            var isExistingAccountNumber = await _repository.IsExistingAccountNumberAsync(bankAccountDto.AccountNumber);
-            if (isExistingAccountNumber && !bankAccountDto.AccountNumber.Equals(bankAccount.AccountNumber))
-            {
-                return BadRequest("Account number is already in use");
-            }
-
-            _mapper.Map(bankAccountDto, bankAccount);
-
-            //Update bank account in DB
-            await _repository.UpdateBankAccountAsync();
-            
+            await _service.UpdateBankAccountAsync(id, BankAccountDto);
             return NoContent();
         }
 
         /// <summary>
-        /// Delete a bank account
+        /// Deletes a BankAccount by its identifier.
         /// </summary>
-        /// <param name="id">bank account id</param>
-        /// <returns>no content if bank account deleted successfully</returns>
-        /// <response code="404">bank account not found</response>
-        /// <response code="204">bank account deleted successfully</response>
-        ///
+        /// <response code="204">The BankAccount was successfully deleted.</response>
+        /// <response code="404">The BankAccount with the specified ID was not found.</response>
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(int id)
         {
-            //Get bank account from DB by its id
-            var bankAccount = await _repository.GetBankAccountByIdAsync(id);
-            if (bankAccount == null)
-            {
-                return NotFound();
-            }
-
-            //Delete bank account from DB
-            await _repository.DeleteBankAccountAsync(bankAccount);
-            
+            await _service.DeleteBankAccountAsync(id);
             return NoContent();
         }
     }

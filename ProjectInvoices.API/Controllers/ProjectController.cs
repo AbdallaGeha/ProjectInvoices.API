@@ -1,195 +1,103 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ProjectInvoices.API.Domain;
-using ProjectInvoices.API.Domain.IRepository;
 using ProjectInvoices.API.Dtos;
+using ProjectInvoices.API.Services.Interfaces;
 
 namespace ProjectInvoices.API.Controllers
 {
     /// <summary>
-    /// Handles operations related to projects
+    /// Handles operations related to Projects
     /// </summary>
     [Route("api/project")]
     [ApiController]
     [Authorize(Roles = "admin,setup entry")]
     public class ProjectController : ControllerBase
     {
-        private readonly IProjectRepository _repository;
-        private readonly IMapper _mapper;
+        private readonly IProjectService _service;
 
-        public ProjectController(IProjectRepository repository, IMapper mapper)
+        public ProjectController(IProjectService service, ILookupService lookupService)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _service = service;
         }
 
         /// <summary>
-        /// Retrieves all projects
+        /// Retrieves a paginated list of Projects based on the specified page number, page size,
+        /// and optional search term.
         /// </summary>
-        /// <returns>List of project dto objects</returns>
-        /// <response code="200">Returns the List of project dto objects</response>
-        /// 
-        [HttpGet("all")]
-        public async Task<ActionResult<List<ProjectDto>>> GetAll()
-        {
-            //Get all projects from DB
-            var projects = await _repository.GetAllProjectsAsync();
-            var projectsDto = _mapper.Map<IEnumerable<ProjectDto>>(projects);
-
-            return Ok(projectsDto);
-        }
-
-        /// <summary>
-        /// Retrieves projects after pagination and searching
-        /// </summary>
-        /// <param name="pageNumber">page number</param>
-        /// <param name="pageSize">page size</param>
-        /// <param name="search">search keyword</param>
-        /// <returns>A dto object contains list of projects and total number of projects
-        /// to be used for pagination
-        /// </returns>
-        /// <response code="200">Returns a dto object contains list of projects and total number of projects</response>
-        /// 
+        /// <response code="200">Returns the paginated list of Projects.</response>
+        /// <response code="400">Returned when the request parameters are invalid.</response>
         [HttpGet("search")]
+        [ProducesResponseType(typeof(ProjectsPaginateDto), 200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<ProjectsPaginateDto>> Get([FromQuery] int pageNumber, int pageSize, string? search = null)
         {
-            //Get total number of projects in DB (for pagination)
-            var totalRecords = await _repository.GetTotalRecords(search);
-
-            //Get projects by page and search keyword
-            var projects = await _repository.GetProjectsAsync(pageNumber, pageSize, search);
-
-            var projectsDto = _mapper.Map<IEnumerable<ProjectDto>>(projects);
-            var projectsPaginateDto = new ProjectsPaginateDto { Projects = projectsDto, TotalRecords = totalRecords };
-
-            return Ok(projectsPaginateDto);
+            var ProjectsPaginateDto = await _service.GetProjectsAsync(pageNumber, pageSize, search);
+            return Ok(ProjectsPaginateDto);
         }
 
+
         /// <summary>
-        /// Retrieves a project by its id
+        /// Gets a Project by ID.
         /// </summary>
-        /// <param name="id">project id</param>
-        /// <returns>the matching project dto object</returns>
-        /// <response code="404">project not found</response>
-        /// <response code="200">returns the matching project dto object</response>
-        ///
+        /// <response code="200">Returns the Project data.</response>
+        /// <response code="404">Project not found.</response>
+        /// <response code="400">Invalid Id supplied.</response>
+        [ProducesResponseType(typeof(ProjectUpdateGetDto), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProjectUpdateGetDto>> Get(int id)
         {
-            //Get project from DB by its id
-            var project = await _repository.GetProjectByIdAsync(id);
-
-            if (project == null)
-            {
-                return NotFound();
-            }
-
-            var projectUpdateGetDto = _mapper.Map<ProjectUpdateGetDto>(project);
-            return Ok(projectUpdateGetDto);
+            var ProjectUpdateGetDto = await _service.GetProjectByIdAsync(id);
+            return Ok(ProjectUpdateGetDto);
         }
 
         /// <summary>
-        /// Create a new project
+        /// Creates a new Project using the provided data.
         /// </summary>
-        /// <param name="projectDto">project info</param>
-        /// <returns>no content if project created successfully</returns>
-        /// <response code="400">project info are not valid or project name already exists</response>
-        /// <response code="204">project created successfully</response>
-        ///
+        /// <response code="204">The Project was successfully created.</response>
+        /// <response code="400">The request data is invalid.</response>
+        /// <response code="409">A Project with the same name already exists.</response>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ProjectCreationDto projectDto)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(409)]
+        public async Task<IActionResult> Post([FromBody] ProjectCreationDto ProjectDto)
         {
-            //Check if new project name exists in DB
-            var isExistingProject = await _repository.IsExistingProjectAsync(projectDto.Name);
-            if (isExistingProject)
-            {
-                return BadRequest("The Project name is already in use");
-            }
-
-            var project = _mapper.Map<Project>(projectDto);
-
-            //Add new project to DB
-            await _repository.AddProjectAsync(project);
-            
+            await _service.AddProjectAsync(ProjectDto);
             return NoContent();
         }
 
         /// <summary>
-        /// Update a project
+        /// Updates an existing Project with the specified identifier.
         /// </summary>
-        /// <param name="id">project id</param>
-        /// <param name="projectDto">project info</param>
-        /// <returns>no content if project updated successfully</returns>
-        /// <response code="404">project not found</response>
-        /// <response code="400">project info are not valid or project name already in use</response>
-        /// <response code="204">project updated successfully</response>
-        ///
+        /// <response code="204">The Project was successfully updated.</response>
+        /// <response code="400">The request data is invalid.</response>
+        /// <response code="404">The Project with the given ID was not found.</response>
+        /// <response code="409">Project name already exists.</response>
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ProjectUpdateDto projectDto)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
+        public async Task<IActionResult> Put(int id, [FromBody] ProjectUpdateDto ProjectDto)
         {
-            //Get project from DB by its id
-            var project = await _repository.GetProjectByIdAsync(id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-
-            if (!projectDto.Name.Equals(project.Name))
-            {
-                //Check if the project to update new name exists in DB
-                var isExistingProject = await _repository.IsExistingProjectAsync(projectDto.Name);
-                if (isExistingProject)
-                {
-                    return BadRequest("The Project name is already in use");
-                }
-            }
-
-            _mapper.Map(projectDto, project);
-
-            //Update project in DB
-            await _repository.UpdateProjectAsync();
+            await _service.UpdateProjectAsync(id, ProjectDto);
             return NoContent();
         }
 
         /// <summary>
-        /// Delete a project
+        /// Deletes a Project by its identifier.
         /// </summary>
-        /// <param name="id">project id</param>
-        /// <returns>no content if project deleted successfully</returns>
-        /// <response code="404">project not found</response>
-        /// <response code="204">project deleted successfully</response>
-        ///
+        /// <response code="204">The Project was successfully deleted.</response>
+        /// <response code="404">The Project with the specified ID was not found.</response>
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(int id)
         {
-            //Get project from DB by its id
-            var project = await _repository.GetProjectByIdAsync(id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-
-            //Delete project from DB
-            await _repository.DeleteProjectAsync(project);
+            await _service.DeleteProjectAsync(id);
             return NoContent();
-        }
-
-        /// <summary>
-        /// Retrieves a list of projects as a list of keyvalue pairs
-        /// </summary>
-        /// <returns>a list of projects as a list of keyvalue pairs</returns>
-        /// <response code="200">a list of projects as a list of keyvalue pairs</response>
-        ///
-        [HttpGet("projectskeyvalue")]
-        public async Task<ActionResult<List<KeyValueDto>>> GetProjectsKeyValue()
-        {
-            //Get all projects from DB
-            var projects = await _repository.GetAllProjectsAsync();
-            var result = projects.Select(x => new KeyValueDto { Key = x.Id.ToString(), Value = x.Name.ToString() });
-            return Ok(result);
         }
     }
 }

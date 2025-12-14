@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using ProjectInvoices.API.Data;
-using ProjectInvoices.API.Data.Repository;
-using ProjectInvoices.API.Domain.IRepository;
 using ProjectInvoices.API.Extensions;
 using ProjectInvoices.API.Middleware;
 using ProjectInvoices.API.Services;
+using ProjectInvoices.API.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,14 +20,13 @@ builder.Services.AddCors(x => x.AddDefaultPolicy(x => x.WithOrigins("http://loca
 
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddScoped<IBankRepository, BankRepository>();
-builder.Services.AddScoped<IItemRepository, ItemRepository>();
-builder.Services.AddScoped<IBankAccountRepository, BankAccountRepository>();
-builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
-builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
-builder.Services.AddScoped<IProjectInvoiceRepository, ProjectInvoiceRepository>();
-builder.Services.AddScoped<IProjectInvoiceService, ProjectInvoiceService>();
-builder.Services.AddScoped<IProjectInvoiceQueries, ProjectInvoiceQueries>();
+builder.Services.AddScoped<ILookupService, LookupService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ISupplierService, SupplierService>();
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IBankService, BankService>();
+builder.Services.AddScoped<IBankAccountService, BankAccountService>();
+builder.Services.AddScoped<IProjectInvoicesService, ProjectInvoicesService>();
 
 builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
 {

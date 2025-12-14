@@ -1,31 +1,15 @@
-﻿using ProjectInvoices.API.Domain.Enums;
+﻿using ProjectInvoices.API.Domain.Base;
+using ProjectInvoices.API.Domain.Enums;
 
 namespace ProjectInvoices.API.Domain
 {
     /// <summary>
     /// Represents a sub contractor that provides construction services
     /// </summary>
-    public class Contractor : BaseEntity
+    public class Contractor : NamedEntity
     {
-        /// <summary>
-        /// Gets or sets contractor name
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets contractor phone
-        /// </summary>
         public string? Phone { get; set; }
-
-        /// <summary>
-        /// Gets or sets contractor email address
-        /// </summary>
         public string? Email { get; set; }
-
-
-        /// <summary>
-        /// Gets or sets contractor address
-        /// </summary>
         public string? Address { get; set; }
     }
 }

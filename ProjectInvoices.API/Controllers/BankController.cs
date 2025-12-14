@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ProjectInvoices.API.Domain;
-using ProjectInvoices.API.Domain.IRepository;
 using ProjectInvoices.API.Dtos;
+using ProjectInvoices.API.Services.Interfaces;
 
 namespace ProjectInvoices.API.Controllers
 {
@@ -17,179 +13,91 @@ namespace ProjectInvoices.API.Controllers
     [Authorize(Roles = "admin,setup entry")]
     public class BankController : ControllerBase
     {
-        private readonly IBankRepository _repository;
-        private readonly IMapper _mapper;
-
-        public BankController(IBankRepository repository, IMapper mapper)
+        private readonly IBankService _service;
+        
+        public BankController(IBankService service, ILookupService lookupService)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _service = service;
         }
 
         /// <summary>
-        /// Retrieves all banks
+        /// Retrieves a paginated list of banks based on the specified page number, page size,
+        /// and optional search term.
         /// </summary>
-        /// <returns>List of bank dto objects</returns>
-        /// <response code="200">Returns the List of bank dto objects</response>
-        [HttpGet("all")]
-        public async Task<ActionResult<List<BankDto>>> GetAll()
-        {
-            //Get all banks from DB
-            var banks = await _repository.GetAllBanksAsync();
-            var banksDto = _mapper.Map<IEnumerable<BankDto>>(banks);
-
-            return Ok(banksDto);
-        }
-
-        /// <summary>
-        /// Retrieves banks after pagination and searching
-        /// </summary>
-        /// <param name="pageNumber">page number</param>
-        /// <param name="pageSize">page size</param>
-        /// <param name="search">search keyword</param>
-        /// <returns>A dto object contains list of banks and total number of banks
-        /// to be used for pagination
-        /// </returns>
-        /// <response code="200">Returns a dto object contains list of banks and total number of banks</response>
-        /// 
+        /// <response code="200">Returns the paginated list of banks.</response>
+        /// <response code="400">Returned when the request parameters are invalid.</response>
         [HttpGet("search")]
+        [ProducesResponseType(typeof(BanksPaginateDto), 200)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<BanksPaginateDto>> Get([FromQuery] int pageNumber, int pageSize, string? search = null)
         {
-            //Get total number of banks in DB (for pagination)
-            var totalRecords = await _repository.GetTotalRecords(search);
-
-            //Get banks by page and search keyword
-            var banks = await _repository.GetBanksAsync(pageNumber, pageSize, search);
-
-            var banksDto = _mapper.Map<IEnumerable<BankDto>>(banks);
-            var banksPaginateDto = new BanksPaginateDto { Banks = banksDto, TotalRecords = totalRecords };
-
+            var banksPaginateDto = await _service.GetBanksAsync(pageNumber, pageSize, search);
             return Ok(banksPaginateDto);
         }
 
 
         /// <summary>
-        /// Retrieves a bank by its id
+        /// Gets a bank by ID.
         /// </summary>
-        /// <param name="id">bank id</param>
-        /// <returns>the matching bank dto object</returns>
-        /// <response code="404">bank not found</response>
-        /// <response code="200">returns the matching bank dto object</response>
-        ///
+        /// <response code="200">Returns the bank data.</response>
+        /// <response code="404">Bank not found.</response>
+        /// <response code="400">Invalid Id supplied.</response>
+        [ProducesResponseType(typeof(BankUpdateGetDto), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<BankUpdateGetDto>> Get(int id)
         {
-            //Get bank from DB by its id
-            var bank = await _repository.GetBankByIdAsync(id);
-
-            if (bank == null)
-            {
-                return NotFound();
-            }
-
-            var bankUpdateGetDto = _mapper.Map<BankUpdateGetDto>(bank);
+            var bankUpdateGetDto = await _service.GetBankByIdAsync(id);
             return Ok(bankUpdateGetDto);
         }
 
         /// <summary>
-        /// Create a new bank
+        /// Creates a new bank using the provided data.
         /// </summary>
-        /// <param name="bankDto">bank info</param>
-        /// <returns>no content if bank created successfully</returns>
-        /// <response code="400">bank info are not valid or bank name already exists</response>
-        /// <response code="204">bank created successfully</response>
-        ///
+        /// <response code="204">The bank was successfully created.</response>
+        /// <response code="400">The request data is invalid.</response>
+        /// <response code="409">A bank with the same name already exists.</response>
         [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(409)]
         public async Task<IActionResult> Post([FromBody] BankCreationDto bankDto)
         {
-            //Check if new bank name exists in DB
-            var isExistingBank = await _repository.IsExistingBankAsync(bankDto.Name);
-            if (isExistingBank)
-            {
-                return BadRequest("The Bank name is already in use");
-            }
-
-            var bank = _mapper.Map<Bank>(bankDto);
-
-            //Add new bank to DB
-            await _repository.AddBankAsync(bank);
-            
+            await _service.AddBankAsync(bankDto);
             return NoContent();
         }
 
         /// <summary>
-        /// Update a bank
+        /// Updates an existing bank with the specified identifier.
         /// </summary>
-        /// <param name="id">bank id</param>
-        /// <param name="bankDto">bank info</param>
-        /// <returns>no content if bank updated successfully</returns>
-        /// <response code="404">bank not found</response>
-        /// <response code="400">bank info are not valid or bank name already in use</response>
-        /// <response code="204">bank updated successfully</response>
-        ///
+        /// <response code="204">The bank was successfully updated.</response>
+        /// <response code="400">The request data is invalid.</response>
+        /// <response code="404">The bank with the given ID was not found.</response>
+        /// <response code="409">Bank name already exists.</response>
         [HttpPut("{id:int}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
         public async Task<IActionResult> Put(int id, [FromBody] BankUpdateDto bankDto)
         {
-            //Get bank from DB by its id
-            var bank = await _repository.GetBankByIdAsync(id);
-            if (bank == null)
-            {
-                return NotFound();
-            }
-
-            if (!bankDto.Name.Equals(bank.Name))
-            {
-                //Check if the bank to update new name exists in DB
-                var isExistingBank = await _repository.IsExistingBankAsync(bankDto.Name);
-                if (isExistingBank)
-                {
-                    return BadRequest("The Bank name is already in use");
-                }
-            }
-
-            _mapper.Map(bankDto, bank);
-
-            //Update bank in DB
-            await _repository.UpdateBankAsync();
+            await _service.UpdateBankAsync(id, bankDto);
             return NoContent();
         }
 
         /// <summary>
-        /// Delete a bank
+        /// Deletes a bank by its identifier.
         /// </summary>
-        /// <param name="id">bank id</param>
-        /// <returns>no content if bank deleted successfully</returns>
-        /// <response code="404">bank not found</response>
-        /// <response code="204">bank deleted successfully</response>
-        ///
+        /// <response code="204">The bank was successfully deleted.</response>
+        /// <response code="404">The bank with the specified ID was not found.</response>
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(int id)
         {
-            //Get bank from DB by its id
-            var bank = await _repository.GetBankByIdAsync(id);
-            if (bank == null)
-            {
-                return NotFound();
-            }
-
-            //Delete bank from DB
-            await _repository.DeleteBankAsync(bank);
+            await _service.DeleteBankAsync(id);
             return NoContent();
-        }
-
-        /// <summary>
-        /// Retrieves a list of banks as a list of keyvalue pairs
-        /// </summary>
-        /// <returns>a list of banks as a list of keyvalue pairs</returns>
-        /// <response code="200">a list of banks as a list of keyvalue pairs</response>
-        ///
-        [HttpGet("bankskeyvalue")]
-        public async Task<ActionResult<List<KeyValueDto>>> GetBanksKeyValue()
-        {
-            //Get all banks from DB
-            var banks = await _repository.GetAllBanksAsync();
-            var result = banks.Select(x => new KeyValueDto { Key = x.Id.ToString(), Value = x.Name.ToString() });
-            return Ok(result);
         }
     }
 }
