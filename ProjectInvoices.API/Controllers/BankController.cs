@@ -15,7 +15,7 @@ namespace ProjectInvoices.API.Controllers
     {
         private readonly IBankService _service;
         
-        public BankController(IBankService service, ILookupService lookupService)
+        public BankController(IBankService service)
         {
             _service = service;
         }
