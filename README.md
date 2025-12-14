@@ -2,7 +2,7 @@
 
 A  **.NET 8 Web API** for managing construction project invoices — from project and supplier and items setup, to invoice creation and approvals, and transactional payment handling.
 
-This personal project showcases my skills in **clean architecture**, **Entity Framework Core**, **transaction management**, and **secure role-based authorization**, designed to reflect real-world enterprise backend systems.
+This personal project showcases my skills in **modern architecture**, **Entity Framework Core**, **transaction management**, and **secure role-based authorization**, designed to reflect real-world enterprise backend systems.
 
 It is used alongside: 
 - [Login Management API](https://github.com/AbdallaGeha)
@@ -50,20 +50,16 @@ In construction, managing project invoices and payments can involve complex work
 
 ## 🧱 Architecture Overview
 
-I implemented a **Clean Architecture** pattern to promote testability, modularity, and maintainability:
+I implemented a **Modern Architecture** pattern 
 
-Application → API Controllers - Services (business Logic orchestration) - DTOs 
-Domain → Domain Models and Interfaces (including repository interfaces)
-Infrastructure → EF Core, DB Context, Repositories
-
+Application → Thin API Controllers - Services (business Logic orchestration and dtos mapping) - DTOs 
+Domain → Domain Models 
+Infrastructure → EF Core, DB Context
+Exception Handling middleware
 
 - **EF Core** is used with **code-first migrations**
 - **Services** encapsulate complex logic
-- **Repositories** for DB operations including pagination and search
-- **Queries** for complex queries
 - **DTOs + AutoMapper** abstract internal structures from external consumers
-
----
 
 ## 🔐 Authentication & Authorization
 
@@ -92,15 +88,10 @@ All payment-related operations are executed using **DB transactions** to ensure 
 
 ## 🧪 Testing Strategy
 
-I wrote **unit tests** for the following components:
-
-- Controllers
-- Services
-- Repositories
+I wrote **unit tests** for complex services using inmemory db context:
 
 Testing tools:
 - `xUnit`
-- `Moq`
 - `In-memory DB contexts`
 
 > Note: Common CRUD logic was omitted from testing to reduce redundancy and focus on distinct business logic.
@@ -125,7 +116,7 @@ Testing tools:
 | Entity Framework Core | ORM + code-first migrations     |
 | SQL Server       | Relational database                |
 | AutoMapper       | DTO ↔️ Domain mapping                |
-| xUnit / Moq      | Unit testing                       |
+| xUnit            | Unit testing                       |
 | JWT Auth         | Secure authentication/authorization |
 | Swagger          | API documentation/testing          |
 
