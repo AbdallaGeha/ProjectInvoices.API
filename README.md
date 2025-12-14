@@ -160,7 +160,7 @@ I'm a .net developer focused on building scalable, testable applications using m
 
 This project is part of my portfolio to demonstrate my ability to model real-world business logic and design clean, maintainable systems.
 
-- 💼 [LinkedIn](https://www.linkedin.com/in/abdalla-geha-9664b62b7/)
+- 💼 [LinkedIn](https://www.linkedin.com/in/abdallageha/)
 - 📂 [More Projects](https://github.com/AbdallaGeha)
 - 📧 Contact: abd_geha@hotmail.com
 
