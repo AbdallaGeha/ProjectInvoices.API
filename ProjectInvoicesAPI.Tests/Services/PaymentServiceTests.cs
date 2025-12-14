@@ -13,7 +13,9 @@ namespace ProjectInvoicesAPI.Tests.Services
 {
     public class PaymentServiceTests
     {
-
+        // ----------------------------------------
+        // GetProjectInvoicePaymentReadyToPayAsync
+        // ----------------------------------------
         [Fact]
         public async Task GetProjectInvoicePaymentReadyToPayAsync_ShouldReturnOnlyUnpaidPayments()
         {
@@ -67,6 +69,9 @@ namespace ProjectInvoicesAPI.Tests.Services
             Assert.Equal(invoice.Id, result[0].InvoiceId);
         }
 
+        // ----------------------------------------
+        // GetProjectInvoicePaymentsByIdsAsync
+        // ----------------------------------------
         [Fact]
         public async Task GetProjectInvoicePaymentsByIdsAsync_ShouldReturnOnlyMatchingUnpaidPayments()
         {
@@ -132,6 +137,9 @@ namespace ProjectInvoicesAPI.Tests.Services
             Assert.Equal(supplier.Name, result[0].Supplier);
         }
 
+        // ----------------------------------------
+        // PayPaymentAsync
+        // ----------------------------------------
         [Fact]
         public async Task PayPaymentAsync_ShouldMarkPaymentDone_AndCreateCashMovements()
         {
@@ -189,6 +197,9 @@ namespace ProjectInvoicesAPI.Tests.Services
             });
         }
 
+        // ----------------------------------------
+        // PayPaymentAsync
+        // ----------------------------------------
         [Fact]
         public async Task PayPaymentAsync_ShouldThrow_WhenPaidAmountDoesNotMatch()
         {
@@ -231,6 +242,9 @@ namespace ProjectInvoicesAPI.Tests.Services
                 service.PayPaymentAsync(dto));
         }
 
+        // ----------------------------------------
+        // PayPaymentGroupAsync
+        // ----------------------------------------
         [Fact]
         public async Task PayPaymentGroupAsync_Should_CreateGroup_InsertMovements_And_MarkPaymentsDone()
         {
@@ -296,6 +310,9 @@ namespace ProjectInvoicesAPI.Tests.Services
             Assert.Equal(group.Id, cashMovements[0].PaymentId);
         }
 
+        // ----------------------------------------
+        // PayPaymentGroupAsync
+        // ----------------------------------------
         [Fact]
         public async Task PayPaymentGroupAsync_Should_Insert_Cash_And_Check_Movements()
         {
@@ -360,6 +377,9 @@ namespace ProjectInvoicesAPI.Tests.Services
             Assert.True(context.CheckOutMovements.Single().IsGroup);
         }
 
+        // ----------------------------------------
+        // PayPaymentGroupAsync
+        // ----------------------------------------
         [Fact]
         public async Task PayPaymentGroupAsync_ShouldThrow_When_TotalAmountMismatch()
         {

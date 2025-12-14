@@ -19,6 +19,9 @@ namespace ProjectInvoices.API.Services.Interfaces
         /// </summary>
         Task<ProjectInvoiceUpdateGetDto> GetProjectInvoiceWithItemsByIdAsync(int id);
 
+        /// <summary>
+        /// Retrieves project invoices for reporting
+        /// </summary>
         Task<ProjectInvoiceViewResponseDto> GetProjectInvoiceView(ProjectInvoiceViewRequestDto requestDto);
     }
 }
