@@ -27,60 +27,39 @@ namespace ProjectInvoices.API.Middleware
         {
             HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
             string message = exception.Message;
-            object response;
-
+            
             switch (exception)
             {
                 case NotFoundException:
                     statusCode = HttpStatusCode.NotFound;
-                    response = new
-                    {
-                        error = message
-                    };
                     break;
 
                 case DuplicateException:
                     statusCode = HttpStatusCode.Conflict;
-                    response = new
-                    {
-                        error = message
-                    };
                     break;
 
                 case BusinessException:
                     statusCode = HttpStatusCode.BadRequest;
-                    response = new
-                    {
-                        error = message
-                    };
                     break;
 
                 case UnauthorizedAccessException:
                     statusCode = HttpStatusCode.Unauthorized;
-                    response = new
-                    {
-                        error = message
-                    };
                     break;
 
                 case ValidationException:
                     statusCode = HttpStatusCode.BadRequest;
-                    response = new
-                    {
-                        error = message
-                    };
                     break;
 
                 default:
                     statusCode = HttpStatusCode.InternalServerError;
-                    response = new { error = "An unexpected error occurred" };
+                    message = "An unexpected error occurred";
                     break;
             }
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;
 
-            return context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            return context.Response.WriteAsync(JsonSerializer.Serialize(message));
         }
     }
 }
