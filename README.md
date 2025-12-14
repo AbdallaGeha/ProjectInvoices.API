@@ -21,7 +21,7 @@ It is used alongside:
 - ✅ **Unit testing** of controllers, services, and repositories
 - ✅ **Search, filtering, and pagination**
 - ✅ **Exception handling** 
-- ✅ **Clean, well-documented code** using XML comments and inline explanations
+- ✅ **Clean, well-documented code** 
 
 ---
 
