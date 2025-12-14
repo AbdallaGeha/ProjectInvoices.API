@@ -6,8 +6,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 namespace ProjectInvoices.API.Middleware
 {
     /// <summary>
-    /// Exception Handling Middleware class, When we encounter an unhandled exception
-    /// in the pipeline we return 500 error response along with string message
+    /// Exception Handling Middleware class
     /// </summary>
     public class ExceptionHandlingMiddleware
     {
