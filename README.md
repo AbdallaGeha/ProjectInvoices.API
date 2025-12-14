@@ -2,7 +2,7 @@
 
 A  **.NET 8 Web API** for managing construction project invoices — from project and supplier and items setup, to invoice creation and approvals, and transactional payment handling.
 
-This personal project showcases my skills in **modern architecture**, **Entity Framework Core**, **transaction management**, and **secure role-based authorization**, designed to reflect practical real-world backend systems ideal for small and medium-sized projects
+This personal project showcases my skills in **Modern architecture**, **Entity Framework Core**, **transaction management**, and **secure role-based authorization**, designed to reflect practical real-world backend systems ideal for small and medium-sized projects
 
 It is used alongside: 
 - [Login Management API](https://github.com/AbdallaGeha)
@@ -13,14 +13,16 @@ It is used alongside:
 ## 🚀 What This Project Demonstrates
 
 - ✅ **.NET 8 Web API** development
-- ✅ **Clean Architecture** with separation of concerns
+- ✅ **Modern Architecture** 
 - ✅ **EF Core (code-first)** with SQL Server
+- ✅ **Thin well documented controllers**
+- ✅ **Services to handle logic and do the mapping**
 - ✅ **Database transactions** for complex workflows
 - ✅ **Role-based JWT authentication** (via external Login API)
 - ✅ **AutoMapper** with custom mappings
 - ✅ **Unit testing** of complex services
 - ✅ **Search, filtering, and pagination**
-- ✅ **Exception handling** 
+- ✅ **Exception handling** (and ensuring accurate responses)
 - ✅ **Clean, well-documented code** 
 
 ---
@@ -54,8 +56,7 @@ I implemented a **Modern Architecture** pattern
 
 Application → Thin API Controllers - Services (business Logic orchestration and dtos mapping) - DTOs 
 Domain → Domain Models 
-Infrastructure → EF Core, DB Context
-Exception Handling middleware
+Data → EF Core, DB Context
 
 - **EF Core** is used with **code-first migrations**
 - **Services** encapsulate complex logic
