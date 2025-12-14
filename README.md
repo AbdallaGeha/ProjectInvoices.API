@@ -17,8 +17,8 @@ It is used alongside:
 - ✅ **EF Core (code-first)** with SQL Server
 - ✅ **Database transactions** for complex workflows
 - ✅ **Role-based JWT authentication** (via external Login API)
-- ✅ **AutoMapper** with custom value mappings
-- ✅ **Unit testing** of controllers, services, and repositories
+- ✅ **AutoMapper** with custom mappings
+- ✅ **Unit testing** of complex services
 - ✅ **Search, filtering, and pagination**
 - ✅ **Exception handling** 
 - ✅ **Clean, well-documented code** 
