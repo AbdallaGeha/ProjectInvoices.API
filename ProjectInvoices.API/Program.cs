@@ -27,6 +27,7 @@ builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IBankService, BankService>();
 builder.Services.AddScoped<IBankAccountService, BankAccountService>();
 builder.Services.AddScoped<IProjectInvoicesService, ProjectInvoicesService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
 {

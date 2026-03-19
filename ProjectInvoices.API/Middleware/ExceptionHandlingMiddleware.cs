@@ -10,11 +10,17 @@ namespace ProjectInvoices.API.Middleware
     /// </summary>
     public class ExceptionHandlingMiddleware
     {
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        private readonly RequestDelegate _next;
+
+        public ExceptionHandlingMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
-                await next(context);
+                await _next(context);
             }
             catch (Exception ex)
             {
@@ -50,7 +56,7 @@ namespace ProjectInvoices.API.Middleware
                     break;
 
                 default:
-                    statusCode = HttpStatusCode.InternalServerError;
+                    //statusCode = HttpStatusCode.InternalServerError;
                     message = "An unexpected error occurred";
                     break;
             }
@@ -58,7 +64,7 @@ namespace ProjectInvoices.API.Middleware
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;
 
-            return context.Response.WriteAsync(JsonSerializer.Serialize(message));
+            return context.Response.WriteAsync(message);
         }
     }
 }
