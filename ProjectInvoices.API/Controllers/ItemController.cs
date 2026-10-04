@@ -14,7 +14,7 @@ namespace ProjectInvoices.API.Controllers
     public class ItemController : ControllerBase
     {
         private readonly IItemService _service;
-        public ItemController(IItemService service, ILookupService lookupService)
+        public ItemController(IItemService service)
         {
             _service = service;
         }
