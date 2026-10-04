@@ -15,7 +15,7 @@ namespace ProjectInvoices.API.Controllers
     {
         private readonly ISupplierService _service;
 
-        public SupplierController(ISupplierService service, ILookupService lookupService)
+        public SupplierController(ISupplierService service)
         {
             _service = service;
         }
