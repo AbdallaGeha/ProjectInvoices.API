@@ -47,7 +47,7 @@ namespace ProjectInvoices.API.Services
         public async Task<List<ProjectInvoicePaymentReadyToPayDto>> GetProjectInvoicePaymentsByIdsAsync(List<int> paymentsIds)
         {
             return await _context.ProjectInvoicePayments.Where(x => x.Done == false && paymentsIds.Contains(x.Id)).Join(
-                    _context.ProjectInvoices.Include(x => x.Project).Include(x => x.Supplier),
+                    _context.ProjectInvoices,
                     x => x.ProjectInvoiceId,
                     x => x.Id,
                     (p, i) => new ProjectInvoicePaymentReadyToPayDto
