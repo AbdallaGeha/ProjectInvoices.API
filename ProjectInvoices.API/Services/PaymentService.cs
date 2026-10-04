@@ -25,7 +25,7 @@ namespace ProjectInvoices.API.Services
         public async Task<List<ProjectInvoicePaymentReadyToPayDto>> GetProjectInvoicePaymentReadyToPayAsync()
         {
             return await _context.ProjectInvoicePayments.Where(x => x.Done == false).Join(
-                    _context.ProjectInvoices.Include(x => x.Project).Include(x => x.Supplier),
+                    _context.ProjectInvoices,
                     x => x.ProjectInvoiceId,
                     x => x.Id,
                     (p, i) => new ProjectInvoicePaymentReadyToPayDto
